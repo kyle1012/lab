@@ -1,0 +1,73 @@
+{
+  "name": "lab",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://10.1.30.202:5000",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@mdi/font": "5.9.55",
+    "@uppy/core": "^3.0.4",
+    "@uppy/dashboard": "^3.1.0",
+    "@uppy/drag-drop": "^3.0.1",
+    "@uppy/file-input": "^3.0.1",
+    "@uppy/form": "^3.0.1",
+    "@uppy/image-editor": "^2.0.1",
+    "@uppy/progress-bar": "^3.0.1",
+    "@uppy/tus": "^3.0.4",
+    "@uppy/vue": "^1.0.1",
+    "@uppy/webcam": "^3.2.1",
+    "@uppy/xhr-upload": "^3.0.4",
+    "axios": "^1.1.3",
+    "bootstrap": "^5.2.2",
+    "bootstrap-vue-3": "^0.4.8",
+    "core-js": "^3.8.3",
+    "noty": "^3.2.0-beta-deprecated",
+    "pdfjs-dist": "^2.7.570",
+    "roboto-fontface": "*",
+    "vue": "^3.2.45",
+    "vue-pdf": "^4.3.0",
+    "vue-router": "^4.0.13",
+    "vue-search-input": "^1.1.11",
+    "vue3-easy-data-table": "^1.5.17",
+    "vue3-pagination": "^1.0.16",
+    "vuetify": "^3.0.0-beta.0",
+    "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0",
+    "webfontloader": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "vue-cli-plugin-vuetify": "~2.5.8",
+    "webpack-plugin-vuetify": "^2.0.0-alpha.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}

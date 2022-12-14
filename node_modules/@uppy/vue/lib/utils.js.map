@@ -1,0 +1,1 @@
+{"version":3,"names":["isVue2","length"],"sources":["utils.js"],"sourcesContent":["// eslint-disable-next-line import/prefer-default-export\nexport const isVue2 = (...args) => {\n  return args.length > 0 && typeof args[0] === 'function'\n}\n"],"mappings":"AAAA;AACA,OAAO,MAAMA,MAAM,GAAG,YAAa;EACjC,OAAO,UAAKC,MAAL,GAAc,CAAd,IAAmB,8DAAmB,UAA7C;AACD,CAFM"}

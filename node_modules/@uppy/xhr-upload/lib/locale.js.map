@@ -1,0 +1,1 @@
+{"version":3,"names":["strings","timedOut"],"sources":["locale.js"],"sourcesContent":["export default {\n  strings: {\n    // Shown in the Informer if an upload is being canceled because it stalled for too long.\n    timedOut: 'Upload stalled for %{seconds} seconds, aborting.',\n  },\n}\n"],"mappings":"AAAA,eAAe;EACbA,OAAO,EAAE;IACP;IACAC,QAAQ,EAAE;EAFH;AADI,CAAf"}

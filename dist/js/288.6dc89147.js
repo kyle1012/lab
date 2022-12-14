@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunklab"]=self["webpackChunklab"]||[]).push([[288],{5288:function(n,r,e){e.r(r),e.d(r,{default:function(){return f}});var u=e(3396);function a(n,r){return(0,u.wg)(),(0,u.iD)("h1",null,"Bar Page")}var t=e(89);const c={},l=(0,t.Z)(c,[["render",a]]);var f=l}}]);
+//# sourceMappingURL=288.6dc89147.js.map
