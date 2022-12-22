@@ -15,12 +15,12 @@
         wrap
         justify-space-between
       >
-      <v-col cols="4" class="border_style">
+      <v-col cols="3" class="border_style">
       <Dashboard
         ref="dash"
         :uppy="uppy"
       /></v-col>
-      <v-col cols="4" class="border_style"> 방화벽</v-col>
+      <v-col cols="5" class="border_style"> <iframe v-bind:src="pdf_file" style="width:700px; height:800px;" frameborder="0"></iframe></v-col>
       <v-col cols="4" class="border_style">
       <div>
         <div>기안구분 :
@@ -68,7 +68,6 @@
     
     data: () => {
       return {
-        gubun:'',
         why : '',
         dep: '',
         num:'',
@@ -88,6 +87,8 @@
         time:'',
         title:'',
         file_path:'',
+        pdf_file:'',
+        file_name:'',
       };
     },
     methods: {
@@ -157,6 +158,8 @@
       this.time = doc.time
       this.title = doc.title
       this.file_path = doc.file_path
+      this.file_name = doc.file_name
+      this.pdf_file = '/FIREWALL_Doc/' + this.file_name
   })
       },
     },

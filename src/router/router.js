@@ -65,6 +65,16 @@ const routes = [
     name: "BoardUpdate_firewall",
     component: () => import('@/components/BoardUpdate_firewall.vue')
   },
+  {
+    path: "/boardDetail_account",
+    name: "BoardDetail_account",
+    component: () => import('@/components/BoardDetail_account.vue')
+  },
+  {
+    path: "/boardUpdate_account",
+    name: "BoardUpdate_account",
+    component: () => import('@/components/BoardUpdate_account.vue')
+  },
 ];
 
 const router = createRouter({

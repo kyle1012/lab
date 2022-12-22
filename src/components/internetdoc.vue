@@ -15,12 +15,12 @@
         wrap
         justify-space-between
       >
-      <v-col cols="4" class="border_style">
+      <v-col cols="3" class="border_style">
       <Dashboard
         ref="dash"
         :uppy="uppy"
       /></v-col>
-      <v-col cols="4" class="border_style"> 이부분에 pdf 미리보기</v-col>
+      <v-col cols="5" class="border_style"> <iframe v-bind:src="pdf_file" style="width:700px; height:800px;" frameborder="0"></iframe></v-col>
       <v-col cols="4" class="border_style">
       <div>
         <div>기안구분 :
@@ -64,7 +64,6 @@
     
     data: () => {
       return {
-        gubun:'',
         IP : '',
         why : '',
         dep: '',
@@ -81,6 +80,8 @@
         time:'',
         title:'',
         file_path:'',
+        pdf_file:'',
+        file_name:'',
       };
     },
     methods: {
@@ -153,6 +154,8 @@
       this.time = int_doc.int_time
       this.title = int_doc.int_title
       this.file_path = int_doc.int_file_path
+      this.file_name = int_doc.file_name
+      this.pdf_file = '/INTERNET_Doc/' + this.file_name
   })
       },
     },

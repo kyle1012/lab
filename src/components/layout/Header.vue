@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <h1>LAB V.1.0 Test</h1>
+    <h1>LAB V.1.0</h1>
     <router-link to="/home">Home</router-link> / <router-link to="/upload">Upload</router-link>
     <header>{{ this.$store.getters.getUserInfo }} </header>
   </div>

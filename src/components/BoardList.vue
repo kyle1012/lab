@@ -1,5 +1,5 @@
 <template>
-      <v-text-field label="기안자 검색..."
+      <v-text-field label="Search Data..."
                     v-model="search">
       </v-text-field>
   <div class="ui icon input" style="width: 100%">
@@ -12,6 +12,7 @@
         <th>부서</th>
         <th>기안일</th>
         <th>기안번호</th>
+        <th>미리보기</th>
       </tr>
       </thead>
       <tbody>
@@ -22,6 +23,13 @@
           <td>{{ row[9] }}</td>
           <td>{{ row[20] }}</td>
           <td>{{ row[19] }}</td>
+          <td>    <v-icon
+      large
+      @click="preview(row[0])"
+      color="orange darken-2"
+    >
+      mdi-arrow-up-bold-box-outline
+    </v-icon></td>
         </tr>
       </tbody>
     </table>
@@ -88,8 +96,39 @@ export default {
           query: this.list[index-1]
     })
       }
+      else if(this.list[index-1][1] == "계정신청서"){
+          this.$router.push({
+          path: './BoardDetail_account',
+          query: this.list[index-1]
+    })
+      }
     }
   },
+   preview(index){
+    if(index = this.list[index-1][0]){
+          if(this.list[index-1][1] == "IP신청서"){
+            var ip_file_path = this.list[index-1][22]
+            var ip_file_name = ip_file_path.substr(11)
+            window.open(ip_file_name, '_blank')
+          }
+      else if(this.list[index-1][1] == "인터넷차단해제신청서"){
+            var ip_file_path = this.list[index-1][22]
+            var ip_file_name = ip_file_path.substr(11)
+            window.open(ip_file_name, '_blank')
+      }
+      else if(this.list[index-1][1] == "방화벽정책신청서"){
+            var ip_file_path = this.list[index-1][22]
+            var ip_file_name = ip_file_path.substr(11)
+            window.open(ip_file_name, '_blank')
+      }
+      else if(this.list[index-1][1] == "계정신청서"){
+            var ip_file_path = this.list[index-1][22]
+            var ip_file_name = ip_file_path.substr(11)
+            window.open(ip_file_name, '_blank')
+      }
+    }
+
+   }
 
   },
   computed:{
@@ -103,16 +142,23 @@ export default {
         return Math.ceil(this.searchData.length / this.dataPerPage);
       },
       callist(){
-      {
-        this.searchData = this.listData.filter((data) => 
-        {
-          return data[5].toLowerCase().includes(this.search.toLowerCase())
-      }).slice(0);
- 
-        return this.searchData.slice(this.startOffset, this.endOffset)
-        }}
+        const searchWord = this.search.toLowerCase();
+
+this.searchData = this.listData.filter((data) => {
+  let flag = false;
+  
+    data.forEach((data2) => {
+        if (data2 && data2.toString().toLowerCase().includes(searchWord)) {
+      flag = true;
+    }
+    });
+
+    return flag;
+}).slice(0);
+return this.searchData.slice(this.startOffset, this.endOffset);
       }
     }
+  }
 </script>
 <style>
 

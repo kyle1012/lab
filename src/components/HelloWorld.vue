@@ -15,12 +15,12 @@
       wrap
       justify-space-between
     >
-    <v-col cols="4" class="border_style">
+    <v-col cols="3" class="border_style">
     <Dashboard
       ref="dash"
       :uppy="uppy"
     /></v-col>
-    <v-col cols="4" class="border_style"> 3등분 3개 //이부분에 pdf 미리보기</v-col>
+    <v-col cols="5" class="border_style"> <iframe v-bind:src="pdf_file" style="width:700px; height:800px;" frameborder="0"></iframe></v-col>
     <v-col cols="4" class="border_style">
     <div>
       <div>기안구분 :
@@ -102,6 +102,8 @@ export default{
       time:'',
       title:'',
       file_path:'',
+      file_name:"",
+      pdf_file:'',
     };
   },
   methods: {
@@ -180,6 +182,8 @@ export default{
     this.time = users.time
     this.title = users.title
     this.file_path = users.file_path
+    this.file_name = users.file_name
+    this.pdf_file = '/IP_Doc/' + this.file_name
 })
     },
   },

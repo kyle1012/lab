@@ -35,6 +35,7 @@
     "vue3-easy-data-table": "^1.5.17",
     "vue3-pagination": "^1.0.16",
     "vuetify": "^3.0.0-beta.0",
+    "vuetify-more-component": "^1.3.0",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0",
     "webfontloader": "^1.0.0"

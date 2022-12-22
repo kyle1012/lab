@@ -1,13 +1,14 @@
 <template>
+  <Header></Header>
     <div class="board-detail">
       <div class="board-contents">
         <h3>[{{$route.query[3]}}]  {{ $route.query[1] }}</h3>
         <div>
-          <strong class="w3-large">{{ $route.query[4] }}</strong>
-          <br>
           <strong class="w3-large">{{ $route.query[9] }}</strong>
           <br>
-          <div class="box1">{{ $route.query[5] }}</div>
+          <strong class="w3-large">{{ $route.query[5] }}</strong>
+          <br>
+          <div class="box1">{{ $route.query[23] }}</div>
           <div class="box2">작성자 : {{ $route.query[21] }}</div>
         </div>
         <br>
@@ -36,17 +37,22 @@
         <button type="button" class="w3-button w3-round w3-blue" v-on:click="download">다운로드</button>
       </div>
     </div>
+    <Footer></Footer>
   </template>
   
   <script>
  import HelloWorldVue from "./HelloWorld.vue";
  import BoardList from "./BoardList"
  import axios from 'axios';
+ import Header from "./layout/Header";
+ import Footer from "./layout/Footer";
 
   export default {
     components: {
      HelloWorldVue,
      BoardList,
+     Header,
+     Footer,
    },
     data() { //변수생성
       return {

@@ -1,8 +1,8 @@
 /**
  * @licstart The following is the entire license notice for the
- * Javascript code in this page
+ * JavaScript code in this page
  *
- * Copyright 2020 Mozilla Foundation
+ * Copyright 2022 Mozilla Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  * @licend The above is the entire license notice for the
- * Javascript code in this page
+ * JavaScript code in this page
  */
 "use strict";
 
@@ -33,13 +33,14 @@ var _util = require("../shared/util.js");
 
 var _content_disposition = require("./content_disposition.js");
 
+var _display_utils = require("./display_utils.js");
+
 function validateRangeRequestCapabilities({
   getResponseHeader,
   isHttp,
   rangeChunkSize,
   disableRange
 }) {
-  (0, _util.assert)(rangeChunkSize > 0, "Range chunk size must be larger than zero");
   const returnValues = {
     allowRangeRequests: false,
     suggestedLength: undefined
@@ -86,7 +87,7 @@ function extractFilenameFromHeader(getResponseHeader) {
       } catch (ex) {}
     }
 
-    if (/\.pdf$/i.test(filename)) {
+    if ((0, _display_utils.isPdfFile)(filename)) {
       return filename;
     }
   }
@@ -99,7 +100,7 @@ function createResponseStatusError(status, url) {
     return new _util.MissingPDFException('Missing PDF "' + url + '".');
   }
 
-  return new _util.UnexpectedResponseException("Unexpected server response (" + status + ') while retrieving PDF "' + url + '".', status);
+  return new _util.UnexpectedResponseException(`Unexpected server response (${status}) while retrieving PDF "${url}".`, status);
 }
 
 function validateResponseStatus(status) {
