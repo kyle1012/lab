@@ -3,7 +3,7 @@ import json
 import PyPDF2
 from flask import Flask, request, make_response, jsonify, abort, send_file
 from flask_mysqldb import MySQL
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 from tika import parser
 from datetime import datetime
@@ -13,7 +13,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-CORS(app)
+CORS(app, support_credentials=True)
 mysql = MySQL(app)
 
 app.config['MYSQL_USER'] = os.getenv("MYSQL_USER")
@@ -81,7 +81,8 @@ def upload():
         b = bb.replace('-',':')
         cc = list(filter(lambda x: '무선MAC주소' in x,txt))[0][8:]
         c = cc.replace('-',':')
-        d = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
+        dd = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
+        d = dd.replace('\t',' ')  
         #if len(list(filter(lambda x: '이메일' in x,txt))[0]) >4:
         #    print(list(filter(lambda x: '이메일' in x,txt))[0][4:].split('@')[0])
         #else:
@@ -90,7 +91,8 @@ def upload():
         f = list(filter(lambda x: '문\t서\t번\t호' in x,txt))[0][8:]
         ip_title = list(filter(lambda x: '제\t\t\t\t\t\t\t\t\t목' in x,txt))[0][12:]
         ip_draft_time = list(filter(lambda x: '기\t\t\t안\t\t\t일' in x,txt))[0][10:]
-        g = (''.join(txt[zzz+1:xxx]))
+        gg = (''.join(txt[zzz+1:xxx]))
+        g = gg.replace('\t',' ')        
         dic = dict(peo = a, mac1 = b, mac2 = c, dep = d, email = e, num = f, whyy = g, file_path = file_path, title = ip_title, time = ip_draft_time, file_name = ip_file_path)
         data = json.dumps(dic, ensure_ascii=False)
     return make_response(data, 200)
@@ -148,7 +150,24 @@ def board():
 
     return data_list
     
-
+@app.route('/search', methods=['GET','POST','OPTIONS'])
+@cross_origin(supports_credentials=True)
+def search():
+    request.on_json_loading_failed = on_json_loading_failed_return_dict
+    search_data = request.get_json()
+    sort = '%' + search_data['db_sort'] + '%'
+    user = '%' + search_data['db_user'] + '%'
+    dep = '%' + search_data['db_dep'] + '%'
+    doc = '%' + search_data['db_doc'] + '%'
+    cur = mysql.connection.cursor()
+    cur.execute('select * from IP_App where doc_division like %s AND user like %s AND dep like %s AND doc like %s', ([sort], [user], [dep], [doc]))
+    board_list = cur.fetchall()
+    cur.close()
+    board_list = sorted(board_list,reverse = True)
+    for row in board_list:
+        data_list = json.dumps(board_list, ensure_ascii=False)
+        
+    return data_list
 
 @app.route('/download', methods=['GET','POST']) 
 def download():
@@ -167,6 +186,17 @@ def download():
                      mimetype='application/pdf',
                      download_name='download_file',
                      as_attachment=True)
+
+@app.route('/delete', methods=['GET','POST']) 
+def delete():
+    request.on_json_loading_failed = on_json_loading_failed_return_dict
+    primary_no = request.get_json()
+    primary_key = primary_no['id']
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE from IP_App where no = %s", [primary_key])
+    mysql.connection.commit()
+    cur.close()
+    return ("삭제 성공", 200)
 
 @app.route('/update', methods=['GET','POST']) 
 def update():
@@ -237,7 +267,8 @@ def int_upload():
         per = list(filter(lambda x: '기간 ' in x,txt))[0][3:]
         c = per.replace('\t',' ')
         int_c = c.replace(" (최대 1년)","")
-        int_d = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
+        int_dd = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
+        int_d = int_dd.replace('\t',' ')  
         int_site = txt[zzz+1]
         int_e = int_site.replace('\t',' ')
         int_why = (''.join(txt[zzz+2:xxx]))
@@ -254,21 +285,10 @@ def int_upload():
 def int_insert():
     request.on_json_loading_failed = on_json_loading_failed_return_dict
     int_data = request.get_json()
-#        user_data = user_model.User.query.filter_by(username=username).first()
-#        if user_data is not None:
-#        my_logger.info("Username is Already exist")
-#        return {"success": "username is already exist"}
-    #int_db_file_path = '/lab/backend/internet_doc/' + int_file_path
     now = datetime.now()
     now_time = now.strftime('%Y-%m-%d %H:%M')
     cur = mysql.connection.cursor() 
     cur.execute('INSERT INTO IP_App (ip, doc_division, form, title, user, dep, why, sort, term, site, doc, d_time, manager, file_path, now_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (int_data['db_ip'], "인터넷차단해제신청서", int_data['db_form'], int_data['db_title'], int_data['db_user'], int_data['db_dep'], int_data['db_why'], int_data['db_sort'], int_data['db_period'], int_data['db_site'], int_data['db_doc'], int_data['db_time'], int_data['db_manager'], int_data['db_file_path'], now_time))
-    #account = cur.fetchone()
-    #if account is not None:
-    #    return ("로그인 성공",200)
-    #else :
-    #    return ("ID와 Password를 확인해주세요",500)
-        #rv = cur.fetchall()
     mysql.connection.commit()
     cur.close()
     return ("업로드 성공", 200)
@@ -303,8 +323,9 @@ def firewall_upload():
         per = list(filter(lambda x: '기간 ' in x,txt))[0][3:]
         cc = per.replace('\t',' ')
         c = cc.replace(" (최대 1년)","")
-        d = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
-        policy = txt[zzz+1]
+        dd = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
+        d = dd.replace('\t',' ')
+        policy = (''.join(txt[zzz+1:xxx]))
         e = policy.replace('\t',' ')
         why = txt[xxx+1]
         f = why.replace('\t',' ')
@@ -371,7 +392,8 @@ def account_upload():
         per = list(filter(lambda x: '사용기간 ' in x,txt))[0][5:]
         cc = per.replace('\t',' ')
         c = cc.replace(" (VPN계정만 해당)","")
-        d = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
+        dd = list(filter(lambda x: '기\t안\t부\t서' in x,txt))[0][8:]
+        d = dd.replace('\t',' ')
         accept = txt[zzz+1:xxx]
         acceptjoin = (''.join(accept))
         e = acceptjoin.replace('\t',' ')
@@ -391,7 +413,6 @@ def account_upload():
 def account_insert():
     request.on_json_loading_failed = on_json_loading_failed_return_dict
     data = request.get_json()
-    print(data)
 #        user_data = user_model.User.query.filter_by(username=username).first()
 #        if user_data is not None:
 #        my_logger.info("Username is Already exist")
