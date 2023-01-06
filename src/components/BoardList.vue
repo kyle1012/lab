@@ -1,15 +1,55 @@
 <template>
-      <v-text-field label="Search Data..."
-                    v-model="search"
-                    >
-      </v-text-field>
+        <v-app>
+<v-app-bar
+      color="deep-purple"
+      elevation="4"
+      dark>
+<v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+  <v-toolbar-title><router-link to="/home" style="text-decoration:none">LAB V.1.0</router-link></v-toolbar-title>
+  <v-spacer></v-spacer>
+  <v-spacer></v-spacer>
+  <v-spacer></v-spacer>
+  <v-text-field
+            label="Search Data.."
+            clearable
+            filled
+            v-model="search"
+            append-inner-icon="mdi-magnify"
+          ></v-text-field>
+        <v-spacer></v-spacer>
+        {{ this.$store.getters.getUserInfo }}
+    </v-app-bar>
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+    >
+    <v-list
+        nav
+        dense
+      >
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload" style="text-decoration:none">IP신청서</router-link></v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload_internet" style="text-decoration:none">인터넷차단해제신청서</router-link></v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload_firewall" style="text-decoration:none">방화벽정책신청서</router-link></v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload_vpn" style="text-decoration:none">계정신청서</router-link></v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-container>
       <v-layout
     >
     <v-row>
-      <v-col cols="2.5"><v-text-field label="분류" v-model="sort" placeholder="분류" outlined></v-text-field></v-col>
-      <v-col cols="2.5"><v-text-field label="기안자" v-model="peo" placeholder="기안자" outlined></v-text-field></v-col>
-      <v-col cols="2.5"><v-text-field label="부서" v-model="dep" placeholder="부서" outlined></v-text-field></v-col>
-      <v-col cols="2.5"><v-text-field label="기안번호" v-model="doc" placeholder="기안번호" outlined></v-text-field></v-col>
+      <v-col cols="2.5"><v-text-field label="분류" v-model="sort" placeholder="분류" outlined clearable></v-text-field></v-col>
+      <v-col cols="2.5"><v-text-field label="기안자" v-model="peo" placeholder="기안자" outlined clearable></v-text-field></v-col>
+      <v-col cols="2.5"><v-text-field label="부서" v-model="dep" placeholder="부서" outlined clearable></v-text-field></v-col>
+      <v-col cols="2.5"><v-text-field label="기안번호" v-model="doc" placeholder="기안번호" outlined clearable></v-text-field></v-col>
       <v-col cols="1"><button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="DBsearch">검색</button></v-col>
       <v-col cols="1"><button type="button" class="w3-button w3-round w3-gray" v-on:click="Reset">초기화</button></v-col>
     </v-row>
@@ -50,6 +90,8 @@
         :length="numOfPages">
       </v-pagination>
   </div>
+</v-container>
+</v-app>
 </template>
 
 <script>
@@ -67,13 +109,14 @@ export default {
       listData: [],
       searchData: [],
       search_length : '',
-      dataPerPage: 10,
+      dataPerPage: 15,
       curPageNum: 1,
       search: '',
       sort: '',
       peo: '',
       dep: '',
       doc: '',
+      drawer: false,
     }
   },
   mounted() {
@@ -95,10 +138,7 @@ export default {
       })
     },
     Reset(){
-       this.doc = ''
-       this.peo = ''
-       this.dep = ''
-       this.sort = ''
+      this.$router.go()
     },
     DBsearch() {
       const url = 'http://10.1.30.202:5000/search';

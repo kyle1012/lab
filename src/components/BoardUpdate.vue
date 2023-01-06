@@ -1,4 +1,40 @@
 <template>
+            <v-app>
+<v-app-bar
+      color="deep-purple"
+      elevation="4"
+      dark>
+<v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+  <v-toolbar-title><router-link to="/home" style="text-decoration:none">LAB V.1.0</router-link></v-toolbar-title>
+  <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
+  <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
+  <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
+        {{ this.$store.getters.getUserInfo }}
+    </v-app-bar>
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+    >
+    <v-list
+        nav
+        dense
+      >
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload" style="text-decoration:none">IP신청서</router-link></v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload_internet" style="text-decoration:none">인터넷차단해제신청서</router-link></v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload_firewall" style="text-decoration:none">방화벽정책신청서</router-link></v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title><router-link to="/upload_vpn" style="text-decoration:none">계정신청서</router-link></v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-container>
     <div class="board-detail">
       <div class="board-contents">
         <h3>[{{$route.query[3]}}]  {{ $route.query[1] }}</h3>
@@ -50,6 +86,8 @@
         <button type="button" class="w3-button w3-round w3-gray" v-on:click="fnList">목록</button>
       </div>
       </div>
+      </v-container>
+      </v-app>
       </template>
 
 <script>
@@ -64,7 +102,8 @@ import axios from 'axios';
   },
    data() { //변수생성
      return {
-        update_data:{}
+        update_data:{},
+        drawer: false,
      }
    },
    mounted() {
